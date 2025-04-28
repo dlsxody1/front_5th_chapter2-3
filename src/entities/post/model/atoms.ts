@@ -1,5 +1,8 @@
 import { atom } from "jotai"
-import { Post } from "./types"
+import { fetchPosts } from "../../../shared/api/posts"
 
-export const postsAtom = atom<Post[]>([])
+export const postsAtom = atom(async () => {
+  const response = await fetchPosts({ limit: 10, skip: 0 })
+  return response.posts
+})
 export const totalPostsAtom = atom<number>(0)
