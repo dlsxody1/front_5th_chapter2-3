@@ -1,16 +1,11 @@
-export const highlightText = (text: string | undefined, highlight: string) => {
-    if (!text) return null;
-    if (!highlight.trim()) {
-      return <span>{text}</span>;
-    }
-    const regex = new RegExp(`(${highlight})`, "gi");
-    const parts = text.split(regex);
-    return (
-      <span>
-        {parts.map((part, i) => 
-          regex.test(part) ? <mark key={i}>{part}</mark> : <span key={i}>{part}</span>
-        )}
-      </span>
-    );
-  };
-  
+export const highlightText = (text: string | undefined, highlight: string): string => {
+  if (!text) return ""
+  if (!highlight.trim()) {
+    return text
+  }
+
+  const escapedHighlight = highlight.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+  const regex = new RegExp(`(${escapedHighlight})`, "gi")
+
+  return text.replace(regex, "<mark>$1</mark>")
+}

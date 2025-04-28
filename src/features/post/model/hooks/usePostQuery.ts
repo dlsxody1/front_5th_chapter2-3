@@ -37,6 +37,13 @@ export const usePostsQuery = () => {
     queryFn: () => fetchUsers({ limit: 0, select: "username,image" }),
   })
 
+  // 수동 검색 트리거
+  const performSearch = () => {
+    if (searchQuery) {
+      searchPostsQuery.refetch()
+    }
+  }
+
   // 결과 결합
   const getActiveQuery = () => {
     if (searchQuery) return searchPostsQuery
@@ -50,10 +57,9 @@ export const usePostsQuery = () => {
   const postsWithUsers =
     activeQuery.data?.posts.map((post) => ({
       ...post,
-      author: usersQuery.data?.users.find((user) => user.id === post.userId),
+      author: usersQuery.data?.users?.find((user) => user.id === post.userId),
     })) || []
 
-  // 정렬 적용
   const sortBy = useAtomValue(sortByAtom)
   const sortOrder = useAtomValue(sortOrderAtom)
 
@@ -88,5 +94,6 @@ export const usePostsQuery = () => {
     isLoading: activeQuery.isLoading || usersQuery.isLoading,
     isError: activeQuery.isError || usersQuery.isError,
     error: activeQuery.error || usersQuery.error,
+    searchPosts: performSearch, // 검색 함수 추가
   }
 }
