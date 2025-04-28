@@ -1,7 +1,85 @@
+import { useAtom, useAtomValue } from "jotai"
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../shared"
 import { Edit2, MessageSquare, ThumbsDown, ThumbsUp, Trash2 } from "lucide-react"
+import { useNavigate } from "react-router-dom"
+import { Post } from "../../../entities/post/model/types"
+import { postsAtom } from "../../../entities/post/model/atoms"
+import {
+  searchQueryAtom,
+  selectedTagAtom,
+  selectedPostAtom,
+  showEditDialogAtom,
+  showPostDetailDialogAtom,
+  showUserModalAtom,
+} from "../model/atoms"
+import { deletePost } from "../../../shared/api/posts"
+import { fetchUser } from "../../../shared/api/users"
+import { selectedUserAtom } from "../../../entities/user/model/atom"
 
 const PostTable = () => {
+  const navigate = useNavigate()
+
+  // 상태 구독
+  const [posts, setPosts] = useAtom(postsAtom)
+  const searchQuery = useAtomValue(searchQueryAtom)
+  const [selectedTag, setSelectedTag] = useAtom(selectedTagAtom)
+  const [, setSelectedPost] = useAtom(selectedPostAtom)
+  const [, setShowEditDialog] = useAtom(showEditDialogAtom)
+  const [, setShowPostDetailDialog] = useAtom(showPostDetailDialogAtom)
+  const [, setSelectedUser] = useAtom(selectedUserAtom)
+  const [, setShowUserModal] = useAtom(showUserModalAtom)
+
+  // URL 업데이트 함수
+  const updateURL = () => {
+    const params = new URLSearchParams()
+    params.set("tag", selectedTag)
+    navigate(`?${params.toString()}`)
+  }
+
+  // 텍스트 하이라이트 함수
+  const highlightText = (text: string, highlight: string) => {
+    if (!text) return null
+    if (!highlight.trim()) {
+      return <span>{text}</span>
+    }
+    const regex = new RegExp(`(${highlight})`, "gi")
+    const parts = text.split(regex)
+    return (
+      <span>
+        {parts.map((part, i) => (regex.test(part) ? <mark key={i}>{part}</mark> : <span key={i}>{part}</span>))}
+      </span>
+    )
+  }
+
+  // 유저 모달 열기
+  const openUserModal = async (user: Post["author"]) => {
+    if (user?.id) {
+      try {
+        const userData = await fetchUser(user.id)
+        setSelectedUser(userData)
+        setShowUserModal(true)
+      } catch (error) {
+        console.error("사용자 정보 가져오기 오류:", error)
+      }
+    }
+  }
+
+  // 게시물 상세 보기
+  const openPostDetail = (post: Post) => {
+    setSelectedPost(post)
+    setShowPostDetailDialog(true)
+  }
+
+  // 게시물 삭제
+  const deletePostHandler = async (id: number) => {
+    try {
+      await deletePost(id)
+      setPosts(posts.filter((post) => post.id !== id))
+    } catch (error) {
+      console.error("게시물 삭제 오류:", error)
+    }
+  }
+
   return (
     <Table>
       <TableHeader>
@@ -42,7 +120,10 @@ const PostTable = () => {
               </div>
             </TableCell>
             <TableCell>
-              <div className="flex items-center space-x-2 cursor-pointer" onClick={() => openUserModal(post.author)}>
+              <div
+                className="flex items-center space-x-2 cursor-pointer"
+                onClick={() => post.author && openUserModal(post.author)}
+              >
                 <img src={post.author?.image} alt={post.author?.username} className="w-8 h-8 rounded-full" />
                 <span>{post.author?.username}</span>
               </div>
@@ -70,7 +151,7 @@ const PostTable = () => {
                 >
                   <Edit2 className="w-4 h-4" />
                 </Button>
-                <Button variant="ghost" size="sm" onClick={() => deletePost(post.id)}>
+                <Button variant="ghost" size="sm" onClick={() => deletePostHandler(post.id)}>
                   <Trash2 className="w-4 h-4" />
                 </Button>
               </div>
