@@ -5,6 +5,8 @@ import { Input, SelectItem, SelectTrigger } from "../../../shared"
 import { Search } from "lucide-react"
 import { Select, SelectValue } from "@radix-ui/react-select"
 import { SelectContent } from "../../../shared/ui/SelectCotent"
+import { useDebounce } from "../../../shared/lib/useDebounce"
+import { useEffect, useState } from "react"
 
 export const FilterBar = () => {
   const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom)
@@ -13,9 +15,22 @@ export const FilterBar = () => {
   const [selectedTag, setSelectedTag] = useAtom(selectedTagAtom)
   const { data: tags, isLoading: isTagsLoading } = useTagsQuery()
 
-  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const [inputValue, setInputValue] = useState(searchQuery)
+  const debouncedValue = useDebounce(inputValue, 400)
+
+  useEffect(() => {
+    setSearchQuery(debouncedValue)
+  }, [debouncedValue, setSearchQuery])
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value)
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      // 검색 실행
+      const value = e.currentTarget.value
+      setInputValue(value)
+      setSearchQuery(value)
     }
   }
 
@@ -27,9 +42,9 @@ export const FilterBar = () => {
           <Input
             placeholder="게시물 검색..."
             className="pl-8"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyPress={handleSearch}
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
           />
         </div>
       </div>
