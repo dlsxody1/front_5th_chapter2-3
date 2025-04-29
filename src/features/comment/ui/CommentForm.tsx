@@ -6,8 +6,9 @@ import {
   showEditCommentDialogAtom,
 } from "../model/atoms"
 import { useCommentMutations } from "../model/hooks/useCommentMutation"
-import { Dialog, DialogContent } from "@radix-ui/react-dialog"
-import { Button, DialogHeader, DialogTitle, Textarea } from "../../../shared"
+
+import { Button, DialogContent, DialogHeader, DialogTitle, Textarea } from "../../../shared"
+import { Dialog } from "@radix-ui/react-dialog"
 
 export const CommentForm: React.FC = () => {
   const [selectedComment, setSelectedComment] = useAtom(selectedCommentAtom)
@@ -29,6 +30,7 @@ export const CommentForm: React.FC = () => {
     }
   }
 
+  console.log(showAddCommentDialog, "comment dialog")
   return (
     <>
       <Dialog open={showAddCommentDialog} onOpenChange={setShowAddCommentDialog}>

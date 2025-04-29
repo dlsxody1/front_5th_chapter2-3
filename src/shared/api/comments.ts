@@ -1,6 +1,13 @@
 import { Comment } from "../../entities/comment/model/types"
 
-export const fetchComments = async (postId: number): Promise<Comment[]> => {
+interface CommentResponse {
+  comments: Comment[]
+  total: number
+  skip: number
+  limit: number
+}
+
+export const fetchComments = async (postId: number): Promise<CommentResponse> => {
   const response = await fetch(`/api/comments/post/${postId}`)
   return response.json()
 }
