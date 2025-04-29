@@ -1,17 +1,17 @@
 // features/postManagement/model/store.ts 수정
 import { atom } from "jotai"
-import { atomWithStorage } from "jotai/utils"
+
 import { Post } from "../../../entities/post/model/types"
 
 // 페이지네이션 상태 (localStorage에 저장)
-export const skipAtom = atomWithStorage<number>("posts-skip", 0)
-export const limitAtom = atomWithStorage<number>("posts-limit", 10)
+export const skipAtom = atom<number>(0)
+export const limitAtom = atom<number>(10)
 
 // 필터링 및 정렬 상태 (localStorage에 저장)
-export const searchQueryAtom = atomWithStorage<string>("posts-search", "")
-export const sortByAtom = atomWithStorage<string>("posts-sortBy", "")
-export const sortOrderAtom = atomWithStorage<string>("posts-sortOrder", "asc")
-export const selectedTagAtom = atomWithStorage<string>("posts-tag", "")
+export const searchQueryAtom = atom<string>("")
+export const sortByAtom = atom<string>("")
+export const sortOrderAtom = atom<string>("asc")
+export const selectedTagAtom = atom<string>("")
 
 // 로딩 상태
 export const loadingAtom = atom<boolean>(false)

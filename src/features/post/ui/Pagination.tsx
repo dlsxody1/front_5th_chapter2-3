@@ -16,6 +16,9 @@ export const Pagination = ({ total }: { total: number }) => {
     setSkip(skip + limit)
   }
 
+  const currentPage = Math.floor(skip / limit) + 1
+  const totalPages = Math.ceil(total / limit)
+
   return (
     <div className="flex justify-between items-center">
       <div className="flex items-center gap-2">
@@ -32,6 +35,9 @@ export const Pagination = ({ total }: { total: number }) => {
         </Select>
         <span>항목</span>
       </div>
+      <span className="text-sm">
+        {currentPage} / {totalPages} 페이지 (총 {total}개)
+      </span>
       <div className="flex gap-2">
         <Button disabled={skip === 0} onClick={handlePrevious}>
           이전

@@ -8,6 +8,8 @@ export const useUpdatePostQuery = () => {
     mutationFn: ({ id, post }: { id: number; post: { title: string; body: string } }) => updatePost(id, post),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] })
+      queryClient.invalidateQueries({ queryKey: ["posts", "tag"] })
+      queryClient.invalidateQueries({ queryKey: ["posts", "search"] })
     },
   })
 }

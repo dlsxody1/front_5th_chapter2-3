@@ -8,11 +8,12 @@ import {
   showPostDetailDialogAtom,
   showUserModalAtom,
 } from "../../../features/post/model/atoms"
-import { usePostMutation } from "../../../features/post/model/hooks/usePostMutation"
+
 import { Button, TableCell, TableRow } from "../../../shared"
 import { Edit2, MessageSquare, ThumbsDown, ThumbsUp, Trash2 } from "lucide-react"
 import { highlightText } from "../../../shared/lib/highlightText"
 import { Post } from "../model/types"
+import { useDeletePostQuery } from "../../../features/post/model/hooks/useDeletePostQuery"
 
 export const PostItem = ({ post }: { post: Post }) => {
   const searchQuery = useAtomValue(searchQueryAtom)
@@ -23,7 +24,7 @@ export const PostItem = ({ post }: { post: Post }) => {
   const setSelectedTag = useSetAtom(selectedTagAtom)
   const setSelectedUserId = useSetAtom(selectedUserIdAtom)
   const setShowUserModal = useSetAtom(showUserModalAtom)
-  const { deletePost } = usePostMutation()
+  const { mutate } = useDeletePostQuery()
 
   const handleEditClick = () => {
     setSelectedPost(post)
@@ -37,7 +38,7 @@ export const PostItem = ({ post }: { post: Post }) => {
 
   const handleDeleteClick = () => {
     if (window.confirm("정말로 이 게시물을 삭제하시겠습니까?")) {
-      deletePost(post.id)
+      mutate(post.id)
     }
   }
 

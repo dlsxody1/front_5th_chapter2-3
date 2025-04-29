@@ -5,7 +5,7 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from "../../../sha
 import { Pagination } from "./Pagination"
 
 export const PostsTable: React.FC = () => {
-  const { posts, isLoading } = usePostsQuery()
+  const { posts, total, isLoading } = usePostsQuery()
 
   if (isLoading) {
     return <div className="flex justify-center p-4">로딩 중...</div>
@@ -29,7 +29,7 @@ export const PostsTable: React.FC = () => {
           ))}
         </TableBody>
       </Table>
-      {posts && <Pagination total={posts.length} />}
+      {posts && <Pagination total={total} />}
     </>
   )
 }

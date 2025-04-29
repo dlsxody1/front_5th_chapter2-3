@@ -4,10 +4,12 @@ import { deletePost } from "../../../../shared/api/posts"
 export const useDeletePostQuery = () => {
   const queryClient = useQueryClient()
 
-  useMutation({
+  return useMutation({
     mutationFn: deletePost,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts"] })
+      queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey[0] === "posts",
+      })
     },
   })
 }
