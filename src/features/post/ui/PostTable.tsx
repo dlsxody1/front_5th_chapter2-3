@@ -1,8 +1,7 @@
 import React from "react"
 import { PostItem } from "../../../entities/post/ui/PostItem"
 import { usePostsQuery } from "../model/hooks/usePostQuery"
-import { Table } from "lucide-react"
-import { TableBody, TableHead, TableHeader, TableRow } from "../../../shared"
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "../../../shared"
 import { Pagination } from "./Pagination"
 
 export const PostsTable: React.FC = () => {
@@ -30,7 +29,7 @@ export const PostsTable: React.FC = () => {
           ))}
         </TableBody>
       </Table>
-      {posts ?? <Pagination total={posts} />}
+      {posts && <Pagination total={posts.length} />}
     </>
   )
 }
