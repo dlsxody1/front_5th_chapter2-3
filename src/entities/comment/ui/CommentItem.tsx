@@ -1,17 +1,20 @@
 import { useAtomValue, useSetAtom } from "jotai"
 import { searchQueryAtom } from "../../../features/post/model/atoms"
 import { selectedCommentAtom, showEditCommentDialogAtom } from "../../../features/comment/model/atoms"
-import { useCommentMutations } from "../../../features/comment/model/hooks/useCommentMutation"
+
 import { highlightText } from "../../../shared/lib/highlightText"
 import { Button } from "../../../shared"
 import { Edit2, ThumbsUp, Trash2 } from "lucide-react"
 import { Comment } from "../model/types"
+import { useDeleteComment } from "../../../features/comment/model/hooks/useDeleteComment"
+import { useLikeComment } from "../../../features/comment/model/hooks/useLikeComment"
 
 export const CommentItem = ({ comment }: { comment: Comment }) => {
   const searchQuery = useAtomValue(searchQueryAtom)
   const setSelectedComment = useSetAtom(selectedCommentAtom)
   const setShowEditCommentDialog = useSetAtom(showEditCommentDialogAtom)
-  const { deleteComment, likeComment } = useCommentMutations()
+  const { mutate: deleteComment } = useDeleteComment()
+  const { mutate: likeComment } = useLikeComment()
 
   const handleEditClick = () => {
     setSelectedComment(comment)

@@ -5,32 +5,30 @@ import {
   showAddCommentDialogAtom,
   showEditCommentDialogAtom,
 } from "../model/atoms"
-import { useCommentMutations } from "../model/hooks/useCommentMutation"
 
 import { Button, DialogContent, DialogHeader, DialogTitle, Textarea } from "../../../shared"
 import { Dialog } from "@radix-ui/react-dialog"
+import { useUpdateComment } from "../model/hooks/useUpdateComment"
 
 export const CommentForm: React.FC = () => {
   const [selectedComment, setSelectedComment] = useAtom(selectedCommentAtom)
   const [newComment, setNewComment] = useAtom(newCommentAtom)
   const [showAddCommentDialog, setShowAddCommentDialog] = useAtom(showAddCommentDialogAtom)
   const [showEditCommentDialog, setShowEditCommentDialog] = useAtom(showEditCommentDialogAtom)
-  const { addComment, updateComment, isAddingComment, isUpdatingComment } = useCommentMutations()
+  const { mutate, isPending } = useUpdateComment()
 
   const handleAddComment = () => {
-    addComment(newComment)
     setShowAddCommentDialog(false)
     setNewComment({ body: "", postId: 0, userId: 1 })
   }
 
   const handleUpdateComment = () => {
     if (selectedComment) {
-      updateComment({ id: selectedComment.id, body: selectedComment.body })
+      mutate({ id: newComment.userId, body: newComment.body })
       setShowEditCommentDialog(false)
     }
   }
 
-  console.log(showAddCommentDialog, "comment dialog")
   return (
     <>
       <Dialog open={showAddCommentDialog} onOpenChange={setShowAddCommentDialog}>
@@ -44,8 +42,8 @@ export const CommentForm: React.FC = () => {
               value={newComment.body}
               onChange={(e) => setNewComment({ ...newComment, body: e.target.value })}
             />
-            <Button onClick={handleAddComment} disabled={isAddingComment || !newComment.body}>
-              {isAddingComment ? "추가 중..." : "댓글 추가"}
+            <Button onClick={handleAddComment} disabled={!newComment.body}>
+              댓글 추가
             </Button>
           </div>
         </DialogContent>
@@ -63,8 +61,8 @@ export const CommentForm: React.FC = () => {
               value={selectedComment?.body || ""}
               onChange={(e) => selectedComment && setSelectedComment({ ...selectedComment, body: e.target.value })}
             />
-            <Button onClick={handleUpdateComment} disabled={isUpdatingComment || !selectedComment?.body}>
-              {isUpdatingComment ? "업데이트 중..." : "댓글 업데이트"}
+            <Button onClick={handleUpdateComment} disabled={isPending || !selectedComment?.body}>
+              {isPending ? "업데이트 중..." : "댓글 업데이트"}
             </Button>
           </div>
         </DialogContent>

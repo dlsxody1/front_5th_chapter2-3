@@ -3,21 +3,27 @@ import { Plus } from "lucide-react"
 import { CommentItem } from "../../../entities/comment/ui/CommentItem"
 import { useCommentsQuery } from "../model/hooks/useCommentQuery"
 import { newCommentAtom, showAddCommentDialogAtom } from "../model/atoms"
-import { useSetAtom } from "jotai"
+import { useAtomValue, useSetAtom } from "jotai"
+import { useAddComment } from "../model/hooks/useAddComment"
 
 const CommentList = ({ postId }: { postId: number }) => {
   const { data, isLoading } = useCommentsQuery(postId)
 
-  const setNewComment = useSetAtom(newCommentAtom)
+  const NewComment = useAtomValue(newCommentAtom)
   const setShowAddCommentDialog = useSetAtom(showAddCommentDialogAtom)
+  const { mutate, isPending } = useAddComment()
 
   const handleAddCommentClick = () => {
-    setNewComment({ body: "", postId, userId: 1 })
+    mutate(NewComment)
     setShowAddCommentDialog(true)
   }
 
   if (isLoading) {
     return <div>댓글 로딩 중...</div>
+  }
+
+  if (isPending) {
+    return <div>댓글 작성 중...</div>
   }
 
   return (
