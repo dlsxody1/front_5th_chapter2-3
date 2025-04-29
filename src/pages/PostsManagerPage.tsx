@@ -6,18 +6,22 @@ import { CommentForm } from "../features/comment/ui/CommentForm"
 import { PostDetail } from "../features/post/ui/PostDetail"
 import { UserCard } from "../entities/user/ui/UserCard"
 import { useSetAtom } from "jotai"
-import { showPostDetailDialogAtom } from "../features/post/model/atoms"
+import { showAddDialogAtom } from "../features/post/model/atoms"
 import { Plus } from "lucide-react"
 
 const PostsManager = () => {
-  const setShowAddDialog = useSetAtom(showPostDetailDialogAtom)
+  const setShowAddDialog = useSetAtom(showAddDialogAtom)
   return (
     <>
       <Card className="w-full max-w-6xl mx-auto">
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <span>게시물 관리자</span>
-            <Button onClick={() => setShowAddDialog(true)}>
+            <Button
+              onClick={() => {
+                setShowAddDialog(true)
+              }}
+            >
               <Plus className="w-4 h-4 mr-2" />
               게시물 추가
             </Button>
