@@ -4,7 +4,7 @@ import { Comment } from "../../../entities/comment/model/types"
 export const selectedCommentAtom = atom<Comment | null>(null)
 export const newCommentAtom = atom<Omit<Comment, "id" | "likes">>({
   body: "",
-  postId: null as unknown as number,
+  postId: 1,
   userId: 1,
 })
 
