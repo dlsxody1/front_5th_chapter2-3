@@ -1,3 +1,4 @@
+import { baseApi } from "../../../shared/api/common"
 import { User } from "../model/types"
 
 export const fetchUsers = async (params?: { limit?: number; select?: string }): Promise<{ users: User[] }> => {
@@ -5,11 +6,11 @@ export const fetchUsers = async (params?: { limit?: number; select?: string }): 
   if (params?.limit !== undefined) queryParams.set("limit", params.limit.toString())
   if (params?.select) queryParams.set("select", params.select)
 
-  const response = await fetch(`/api/users?${queryParams.toString()}`)
-  return response.json()
+  const response = await baseApi(`/api/users?${queryParams.toString()}`)
+  return response.data
 }
 
 export const fetchUser = async (id: number): Promise<User> => {
-  const response = await fetch(`/api/users/${id}`)
-  return response.json()
+  const response = await baseApi.get(`/users/${id}`)
+  return response.data
 }

@@ -1,65 +1,41 @@
-import { Post } from "../../entities/post/model/types"
+import { baseApi } from "../../../shared/api/common"
+import { Post } from "../model/types"
 
 interface PostsResponse {
   posts: Post[]
   total: number
 }
 
-interface SearchResponse {
-  posts: Post[]
-  total: number
-}
-
-interface TagResponse {
-  posts: Post[]
-  total: number
-}
-
-interface Tag {
-  slug: string
-  url: string
-}
-
 export const fetchPosts = async (params: { limit: number; skip: number }): Promise<PostsResponse> => {
-  const response = await fetch(`/api/posts?limit=${params.limit}&skip=${params.skip}`)
-  return response.json()
+  const response = await baseApi.get("/posts", { params })
+  return response.data
 }
 
-export const searchPosts = async (query: string): Promise<SearchResponse> => {
-  const response = await fetch(`/api/posts/search?q=${query}`)
-  return response.json()
+export const searchPosts = async (query: string): Promise<PostsResponse> => {
+  const response = await baseApi.get("/posts/search", { params: { q: query } })
+  return response.data
 }
 
-export const fetchPostsByTag = async (tag: string): Promise<TagResponse> => {
-  const response = await fetch(`/api/posts/tag/${tag}`)
-  return response.json()
+export const fetchPostsByTag = async (tag: string): Promise<PostsResponse> => {
+  const response = await baseApi.get(`/posts/tag/${tag}`)
+  return response.data
 }
 
 export const addPost = async (post: { title: string; body: string; userId: number }): Promise<Post> => {
-  const response = await fetch("/api/posts/add", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(post),
-  })
-  return response.json()
+  const response = await baseApi.post("/posts/add", post)
+  return response.data
 }
 
 export const updatePost = async (id: number, post: { title: string; body: string }): Promise<Post> => {
-  const response = await fetch(`/api/posts/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(post),
-  })
-  return response.json()
+  const response = await baseApi.put(`/posts/${id}`, post)
+  return response.data
 }
 
 export const deletePost = async (id: number): Promise<void> => {
-  await fetch(`/api/posts/${id}`, {
-    method: "DELETE",
-  })
+  await baseApi.delete(`/posts/${id}`)
 }
 
-export const fetchTags = async (): Promise<Tag[]> => {
-  const response = await fetch("/api/posts/tags")
-  return response.json()
+export const fetchTags = async (): Promise<{ slug: string; url: string }[]> => {
+  const response = await baseApi.get("/posts/tags")
+  return response.data
 }
