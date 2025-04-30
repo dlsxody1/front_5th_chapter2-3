@@ -9,6 +9,8 @@ export const usePostsQuery = () => {
   const limit = useAtomValue(limitAtom)
   const selectedTag = useAtomValue(selectedTagAtom)
   const searchQuery = useAtomValue(searchQueryAtom)
+  const sortBy = useAtomValue(sortByAtom)
+  const sortOrder = useAtomValue(sortOrderAtom)
 
   // 기본 게시물 쿼리
   const postsQuery = useQuery({
@@ -59,9 +61,6 @@ export const usePostsQuery = () => {
       ...post,
       author: usersQuery.data?.users?.find((user) => user.id === post.userId),
     })) || []
-
-  const sortBy = useAtomValue(sortByAtom)
-  const sortOrder = useAtomValue(sortOrderAtom)
 
   const sortedPosts = [...postsWithUsers].sort((a, b) => {
     if (!sortBy || sortBy === "none") return 0
