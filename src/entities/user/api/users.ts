@@ -1,4 +1,4 @@
-import { User } from "../../entities/user/model/types"
+import { User } from "../model/types"
 
 export const fetchUsers = async (params?: { limit?: number; select?: string }): Promise<{ users: User[] }> => {
   const queryParams = new URLSearchParams()

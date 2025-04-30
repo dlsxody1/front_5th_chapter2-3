@@ -1,8 +1,8 @@
 import { useAtomValue } from "jotai"
 import { limitAtom, searchQueryAtom, selectedTagAtom, skipAtom, sortByAtom, sortOrderAtom } from "../atoms"
 import { useQuery } from "@tanstack/react-query"
-import { fetchPosts, fetchPostsByTag, searchPosts } from "../../../../shared/api/posts"
-import { fetchUsers } from "../../../../shared/api/users"
+import { fetchUsers } from "../../../../entities/user/api/users"
+import { fetchPosts, fetchPostsByTag, searchPosts } from "../../../../entities/post/api/posts"
 
 export const usePostsQuery = () => {
   const skip = useAtomValue(skipAtom)
