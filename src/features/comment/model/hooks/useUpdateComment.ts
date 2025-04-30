@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { updateComment } from "../../../../shared/api/comments"
+import { updateComment } from "../../../../entities/comment/api/comments"
 import { CommentQueryProps } from "../../../../entities/comment/model/types"
 
 export const useUpdateComment = () => {

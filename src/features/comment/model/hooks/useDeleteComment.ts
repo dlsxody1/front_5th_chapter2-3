@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { deleteComment } from "../../../../shared/api/comments"
+import { deleteComment } from "../../../../entities/comment/api/comments"
 import { CommentQueryProps } from "../../../../entities/comment/model/types"
 
 export const useDeleteComment = () => {
