@@ -1,13 +1,6 @@
-import { Comment } from "../../entities/comment/model/types"
+import { Comment, CommentQueryProps } from "../../entities/comment/model/types"
 
-interface CommentResponse {
-  comments: Comment[]
-  total: number
-  skip: number
-  limit: number
-}
-
-export const fetchComments = async (postId: number): Promise<CommentResponse> => {
+export const fetchComments = async (postId: number): Promise<CommentQueryProps> => {
   const response = await fetch(`/api/comments/post/${postId}`)
   return response.json()
 }

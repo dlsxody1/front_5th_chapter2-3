@@ -5,7 +5,6 @@ import {
   showAddCommentDialogAtom,
   showEditCommentDialogAtom,
 } from "../model/atoms"
-
 import { Button, DialogContent, DialogHeader, DialogTitle, Textarea } from "../../../shared"
 import { Dialog } from "@radix-ui/react-dialog"
 import { useUpdateComment } from "../model/hooks/useUpdateComment"
@@ -24,7 +23,7 @@ export const CommentForm: React.FC = () => {
 
   const handleUpdateComment = () => {
     if (selectedComment) {
-      mutate({ id: newComment.userId, body: newComment.body })
+      mutate({ id: selectedComment.id, body: selectedComment.body })
       setShowEditCommentDialog(false)
     }
   }
