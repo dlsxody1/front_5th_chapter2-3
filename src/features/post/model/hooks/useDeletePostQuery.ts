@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { deletePost } from "../../../../shared/api/posts"
+
 import { PostQueryProps } from "../../../../entities/post/model/types"
+import { deletePost } from "../../../../entities/post/api/posts"
 
 export const useDeletePostQuery = () => {
   const queryClient = useQueryClient()

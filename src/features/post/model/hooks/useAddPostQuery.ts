@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { addPost } from "../../../../shared/api/posts"
+
 import { limitAtom, skipAtom, sortByAtom, sortOrderAtom } from "../atoms"
 import { useAtomValue } from "jotai"
+import { addPost } from "../../../../entities/post/api/posts"
 
 const useAddPostQuery = () => {
   const queryClient = useQueryClient()
@@ -44,7 +45,8 @@ const useAddPostQuery = () => {
 
       // 다른 관련 쿼리도 업데이트
       if (newPost.tags && newPost.tags.length > 0) {
-        newPost.tags.forEach((tag) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        newPost.tags.forEach((tag: any) => {
           queryClient.invalidateQueries({ queryKey: ["posts", "tag", tag] })
         })
       }
