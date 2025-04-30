@@ -1,13 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { updatePost } from "../../../../shared/api/posts"
-import { Post } from "../../../../entities/post/model/types"
-
-interface PostQueryProps {
-  limit: number
-  posts: Post[]
-  skip: number
-  total: number
-}
+import { PostQueryProps } from "../../../../entities/post/model/types"
 
 export const useUpdatePostQuery = () => {
   const queryClient = useQueryClient()

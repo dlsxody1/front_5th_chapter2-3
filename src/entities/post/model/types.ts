@@ -7,3 +7,10 @@ export interface Post {
   reactions?: { likes: number; dislikes: number }
   author?: { id: number; username: string; image?: string }
 }
+
+export interface PostQueryProps {
+  limit: number
+  posts: Post[]
+  skip: number
+  total: number
+}
