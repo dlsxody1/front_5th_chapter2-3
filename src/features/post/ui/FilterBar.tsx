@@ -29,6 +29,7 @@ export const FilterBar = () => {
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       const value = e.currentTarget.value
+      console.log(value, "value")
       setInputValue(value)
       setSearchQuery(value)
     }
