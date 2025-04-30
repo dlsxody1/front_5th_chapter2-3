@@ -11,10 +11,8 @@ const CommentAddDialog = () => {
 
   const handleAddComment = () => {
     if (newComment.body && newComment.postId) {
-      console.log(newComment, "new")
       addComment(newComment)
       setShowAddCommentDialog(false)
-      setNewComment({ body: "", postId: 1, userId: 1 })
     }
   }
   return (
