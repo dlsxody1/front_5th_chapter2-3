@@ -8,3 +8,10 @@ export interface Comment {
   likes: number
   user?: User
 }
+
+export interface CommentQueryProps {
+  comments: Comment[]
+  limit: number
+  skip: number
+  total: 2
+}
