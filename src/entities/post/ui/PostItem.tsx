@@ -38,6 +38,7 @@ export const PostItem = ({ post }: { post: Post }) => {
 
   const handleDeleteClick = () => {
     if (window.confirm("정말로 이 게시물을 삭제하시겠습니까?")) {
+      console.log(post.id, "post")
       mutate(post.id)
     }
   }

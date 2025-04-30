@@ -6,8 +6,15 @@ export const useDeleteComment = () => {
 
   return useMutation({
     mutationFn: deleteComment,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["comments"] })
+    onSuccess: (_, variables) => {
+      const commentQueries = queryClient.getQueriesData({ queryKey: ["comments"] })
+      commentQueries.forEach(([queryKey]) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        queryClient.setQueryData(queryKey, (oldData: any) => {
+          if (!oldData) return oldData
+          return Array.isArray(oldData) ? oldData.filter((comment) => comment.id !== variables) : oldData
+        })
+      })
     },
   })
 }

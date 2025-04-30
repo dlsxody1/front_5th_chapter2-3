@@ -1,5 +1,4 @@
 import { useAtom } from "jotai"
-
 import { sortOrderAtom } from "../model/atoms"
 import { Select, SelectValue } from "@radix-ui/react-select"
 import { SelectItem, SelectTrigger } from "../../../shared"
