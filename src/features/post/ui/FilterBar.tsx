@@ -1,19 +1,15 @@
 import { useAtom } from "jotai"
-import { searchQueryAtom, selectedTagAtom, sortByAtom, sortOrderAtom } from "../model/atoms"
-import { useTagsQuery } from "../model/hooks/useTagsQuery"
-import { Input, SelectItem, SelectTrigger } from "../../../shared"
+import { searchQueryAtom } from "../model/atoms"
+import { Input } from "../../../shared"
 import { Search } from "lucide-react"
-import { Select, SelectValue } from "@radix-ui/react-select"
-import { SelectContent } from "../../../shared/ui/SelectCotent"
 import { useDebounce } from "../../../shared/lib/useDebounce"
 import { useEffect, useState } from "react"
+import TagFilter from "./TagFilter"
+import SortFilter from "./SortFilter"
+import SortOrderFilter from "./SortOrderFilter"
 
 export const FilterBar = () => {
   const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom)
-  const [sortBy, setSortBy] = useAtom(sortByAtom)
-  const [sortOrder, setSortOrder] = useAtom(sortOrderAtom)
-  const [selectedTag, setSelectedTag] = useAtom(selectedTagAtom)
-  const { data: tags, isLoading: isTagsLoading } = useTagsQuery()
 
   const [inputValue, setInputValue] = useState(searchQuery)
   const debouncedValue = useDebounce(inputValue, 400)
@@ -49,40 +45,9 @@ export const FilterBar = () => {
           />
         </div>
       </div>
-      <Select value={selectedTag} onValueChange={setSelectedTag}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="태그 선택" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">모든 태그</SelectItem>
-          {!isTagsLoading &&
-            tags?.map((tag) => (
-              <SelectItem key={tag.url} value={tag.slug}>
-                {tag.slug}
-              </SelectItem>
-            ))}
-        </SelectContent>
-      </Select>
-      <Select value={sortBy} onValueChange={setSortBy}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="정렬 기준" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="none">없음</SelectItem>
-          <SelectItem value="id">ID</SelectItem>
-          <SelectItem value="title">제목</SelectItem>
-          <SelectItem value="reactions">반응</SelectItem>
-        </SelectContent>
-      </Select>
-      <Select value={sortOrder} onValueChange={setSortOrder}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="정렬 순서" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="asc">오름차순</SelectItem>
-          <SelectItem value="desc">내림차순</SelectItem>
-        </SelectContent>
-      </Select>
+      <TagFilter />
+      <SortFilter />
+      <SortOrderFilter />
     </div>
   )
 }
